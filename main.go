@@ -13,6 +13,11 @@ var start = time.Now()
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		// added to make sure it only goes to root when root url is matched
+		if r.URL.Path != "/" {
+			http.NotFound(w, r)
+			return
+		}
 		fmt.Fprintln(w, "pulse is alive")
 	})
 

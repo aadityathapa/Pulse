@@ -1,0 +1,29 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t pulse .
+
+      - name: Start container
+        run: docker run -d --name pulse -p 8080:8080 pulse
+
+      - name: Smoke test /health
+        run: |
+          for i in $(seq 1 10); do
+            if curl -fsS localhost:8080/health; then
+              echo && echo "PASS" && exit 0
+            fi
+            sleep 1
+          done
+          echo "FAIL"
+          docker logs pulse
+          exit 1

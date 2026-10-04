@@ -1,6 +1,8 @@
-FROM golang:1.27-alpine AS build
+FROM golang:alpine AS build
 WORKDIR /src
-COPY go.mod main.go ./
+COPY go.mod go.sum ./
+RUN go mod download
+COPY main.go ./
 RUN CGO_ENABLED=0 go build -o /pulse .
 
 FROM scratch

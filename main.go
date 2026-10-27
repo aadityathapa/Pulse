@@ -30,7 +30,7 @@ func main() {
 	mux.HandleFunc("/version", versionHandler)
 
 	addr := ":" + getPort()
-	log.Printf("Pulse %s listening on %s", version, addr)
+	log.Printf("pulse %s listening on %s", version, addr)
 	if err := http.ListenAndServe(addr, mux); err != nil {
 		log.Fatal(err)
 	}
